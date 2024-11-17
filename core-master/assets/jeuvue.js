@@ -1,4 +1,6 @@
-Vue.component('map-component', {
+let vuemap = Vue.createApp({});
+
+vuemap.component('map-component', {
   template: '<div id="map"></div>',     //le div où la carte est contenue
 
   mounted() {
@@ -7,10 +9,7 @@ Vue.component('map-component', {
 
   methods: {
     initMap() {
-      const map = L.map('map', {
-          center: [48.85, 2.35],
-          zoom: 13,
-      });
+      var map = L.map('map').setView([48.85, 2.35], 10);
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
@@ -26,14 +25,12 @@ Vue.component('map-component', {
           .openOn(map);
       }
 
-map.on('click', onMapClick);
-    }
-  }
-});
+      map.on('click', onMapClick);
+      }
+    },
+  });
 
-new Vue({
-  el: '#appmap',
-});
+vuemap.mount('#appmap');
 
 
 //Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))
