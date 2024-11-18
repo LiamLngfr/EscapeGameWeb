@@ -32,19 +32,39 @@ vuemap.component('map-component', {
 
 vuemap.mount('#appmap');
 
-
-//Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))
-//Remplacer id du point
-fetch('/objetSuivant', {
+//Requête Fetch pour le 1er objet, à déclencher dès le début du script (g juste peur de tt casser)
+fetch('/premierObjet', {
   method: 'post',
-  body: 'IdPoint=' + '1',
+  body: '',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   
   }})
   .then(r => r.json())
   .then(r => {
-  console.log(r) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le 
-})
+  console.log(r['resultat'][0])
+  let resultat = r['resultat'][0]
+
+
+
+
+  });
+
+
+
+
+
+//Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))
+//Remplacer LeNomDeTaVariable
+fetch('/objetSuivant', {
+  method: 'post',
+  body: 'IdPoint=' + '6',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
   
-;
+  }})
+  .then(r => r.json())
+  .then(r => {
+  console.log(r) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le tableau associatif (Tu peux remplacer .json par .txt pour mieux visualiser)
+  let resultat = r['resultat'][0]
+});
