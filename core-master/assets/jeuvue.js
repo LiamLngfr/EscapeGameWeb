@@ -32,6 +32,40 @@ vuemap.component('map-component', {
 
 vuemap.mount('#appmap');
 
+
+//A partir d'ici ça na fonctionne plus : le truc est bien implémenté je crois, mais la requête en elle-même renvoie une erreur
+let testfetch = Vue.createApp({});
+
+testfetch.component('testfetch', {
+  template: '<div id="testf"></div>',
+
+  created() {
+    this.fetchobj();
+  },
+
+  methods: {
+    fetchobj() {
+      fetch('/premierObjet', {
+        method: 'post',
+        body: '',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+  
+        }})
+        .then(r => r.json())
+        .then(r => {
+        console.log(r['resultat'][0])
+        let resultat = r['resultat'][0]
+
+        console.print('coucou')
+      });
+      }
+    }
+  });
+
+  testfetch.mount('#test');
+
+/*
 //Requête Fetch pour le 1er objet, à déclencher dès le début du script (g juste peur de tt casser)
 fetch('/premierObjet', {
   method: 'post',
@@ -49,11 +83,11 @@ fetch('/premierObjet', {
 
 
   });
+*/
 
 
 
-
-
+/*
 //Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))
 //Remplacer LeNomDeTaVariable
 fetch('/objetSuivant', {
@@ -68,3 +102,4 @@ fetch('/objetSuivant', {
   console.log(r) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le tableau associatif (Tu peux remplacer .json par .txt pour mieux visualiser)
   let resultat = r['resultat'][0]
 });
+*/

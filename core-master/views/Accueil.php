@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Le faucon d'argent</title>
+    <link rel="icon" href="../assets/image/favicon.ico" type="image/x-icon">
   </head>
 
   <body>
