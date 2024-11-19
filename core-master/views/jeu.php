@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Titre de la page</title>
+    <title>Le faucon d'argent</title>
     <link rel="icon" href="../assets/image/favicon.ico" type="image/x-icon">
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -20,14 +20,9 @@
 
   <body>
     <p>Test</p>
-    <div id="appmap">
-      <map-component></map-component> <!-- Vue.js va gérer ce composant -->
-    </div>
-    <?php ini_set('display_errors', 1);
-	error_reporting(E_ALL);?>
-    <div id="test">
-    	<testfetch></testfetch>
-    </div>
+    
+    <div id="appmap"></div>
+    <div id="map"></div>
 
   <!-- Inclure votre fichier JavaScript où vous définissez Vue.js et Leaflet -->
   <script src="assets/jeuvue.js"></script>

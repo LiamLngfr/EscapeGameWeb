@@ -1,91 +1,89 @@
-let vuemap = Vue.createApp({});
+let vue = Vue.createApp({
+  data() {
+    return {
+      resultat: null,
+      feature: L.featureGroup([]),
+      map: null,
+    };
+  },
 
-vuemap.component('map-component', {
-  template: '<div id="map"></div>',     //le div où la carte est contenue
+  created() {
+    this.init_pingouin(); // Charge le GeoJSON du premier objet au départ
+  },
 
   mounted() {
-    this.initMap();
+    this.initMap(); // Charge la carte
   },
 
   methods: {
     initMap() {
-      var map = L.map('map').setView([48.85, 2.35], 10);
+      this.map = L.map('map').setView([48.85, 2.35], 3);
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(this.map);
 
+      // Ne pas oublier de supprimer ce truc qui sert à rien mais fais plaisir
       var popup = L.popup();
-
-      function onMapClick(e) {
-          popup
+      this.map.on('click', (e) => {
+        popup
           .setLatLng(e.latlng)
           .setContent("Tu as cliqué aux coordonnées " + e.latlng.toString().replace('LatLng', '(Lat,Long) = '))
-          .openOn(map);
-      }
-
-      map.on('click', onMapClick);
-      }
+          .openOn(this.map);
+      });
     },
-  });
 
-vuemap.mount('#appmap');
-
-
-//A partir d'ici ça na fonctionne plus : le truc est bien implémenté je crois, mais la requête en elle-même renvoie une erreur
-let testfetch = Vue.createApp({});
-
-testfetch.component('testfetch', {
-  template: '<div id="testf"></div>',
-
-  created() {
-    this.fetchobj();
-  },
-
-  methods: {
-    fetchobj() {
+    init_pingouin() {
       fetch('/premierObjet', {
         method: 'post',
         body: '',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
-  
-        }})
+        }
+      })
         .then(r => r.json())
         .then(r => {
-        console.log(r['resultat'][0])
-        let resultat = r['resultat'][0]
+          const resul = r['resultat'][0]["geom_json"];
+          //console.log(resul);
 
-        console.print('coucou')
-      });
+          // Transforme le résultat en JSON au format attendu par Leaflet
+          this.resultat = {
+            "type": "Feature",
+            "geometry": JSON.parse(resul),
+            "properties": {}
+          };
+
+          // Vérifie la carte avant l'ajout du JSON
+          if (this.map) {
+            this.addGeoJSONToMap();
+          }
+        })
+        .catch(error => {
+          console.error("Erreur lors de la récupération des données :", error);
+        });
+    },
+
+    addGeoJSONToMap() {
+      // Vérifie la validité du JSON
+      if (this.resultat) {
+        console.log("Ajout des données JSON :", this.resultat);
+
+        // Ajoute les données à la carte
+        L.geoJSON(this.resultat).addTo(this.map);
+      } else {
+        console.warn("Les données GeoJSON sont invalides ou inexistantes.");
       }
     }
-  });
-
-  testfetch.mount('#test');
-
-/*
-//Requête Fetch pour le 1er objet, à déclencher dès le début du script (g juste peur de tt casser)
-fetch('/premierObjet', {
-  method: 'post',
-  body: '',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  
-  }})
-  .then(r => r.json())
-  .then(r => {
-  console.log(r['resultat'][0])
-  let resultat = r['resultat'][0]
+    
+    
 
 
 
 
-  });
-*/
-
-
+    
+  }
+}).mount('#appmap');
 
 /*
 //Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))

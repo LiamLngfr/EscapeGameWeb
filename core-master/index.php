@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
+<?php
 require 'flight/Flight.php';
 $link = pg_connect("host=localhost dbname=postgres user=postgres password=postgres options='--client_encoding=UTF8'");
 Flight::set('db', $link);
@@ -44,7 +48,7 @@ Flight::route('/objetSuivant', function() {
 	if (isset($IdPoint) and !empty($IdPoint)) {
 
 
-		$reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE id=". $IdPoint);
+		$reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE previous_item_id=". $IdPoint);
 		$resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
 
 
