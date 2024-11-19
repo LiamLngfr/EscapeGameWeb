@@ -4,6 +4,7 @@ let vue = Vue.createApp({
       resultat: null,
       feature: L.featureGroup([]),
       map: null,
+      point: [],
     };
   },
 
@@ -17,7 +18,7 @@ let vue = Vue.createApp({
 
   methods: {
     initMap() {
-      this.map = L.map('map').setView([48.85, 2.35], 3);
+      this.map = L.map('map').setView([-25, 50], 3); //Sur Paris : [48.85, 2.35]
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -44,19 +45,29 @@ let vue = Vue.createApp({
       })
         .then(r => r.json())
         .then(r => {
-          const resul = r['resultat'][0]["geom_json"];
-          //console.log(resul);
+          const resul = r['resultat'][0]; // Résultat requête SQL
+          // console.log(resul);
 
-          // Transforme le résultat en JSON au format attendu par Leaflet
-          this.resultat = {
-            "type": "Feature",
-            "geometry": JSON.parse(resul),
-            "properties": {}
-          };
-
-          // Vérifie la carte avant l'ajout du JSON
+          // Vérifie que la carte est bien là
           if (this.map) {
-            this.addGeoJSONToMap();
+            // Ajoute le GeoJSON + récupère le marqueur
+            let marker = this.addGeoJSONToMap(resul);
+
+            // Vérifie sla validité du marqueur
+            if (marker) {
+
+              //On associe le popup au marker un seule fois, pour ne pas le refaire à chaque clic
+              const contenu_popup = "C'est moi le pingouin !"
+              marker.bindPopup(contenu_popup);
+
+              marker.on('click', function() {
+                marker.openPopup();
+              });
+            } else {
+              console.warn("Le GeoJSON n'a pas généré de marqueur.");
+            }
+          } else {
+            console.error("La carte n'est pas initialisée.");
           }
         })
         .catch(error => {
@@ -64,24 +75,54 @@ let vue = Vue.createApp({
         });
     },
 
-    addGeoJSONToMap() {
+
+    obj_suivant(id_prec) {
+      fetch('/objetSuivant', {
+        method: 'post',
+        body: 'IdPoint=' + id_prec,
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+  
+      }})
+        .then(r => r.json())
+        .then(r => {
+          const resul = r['resultat'][0];
+          this.point.push(resul)
+          console.log(this.point) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le tableau associatif (Tu peux remplacer .json par .txt pour mieux visualiser)
+          
+          if (this.map) {
+            this.addGeoJSONToMap(point[point.length - 1]);
+          }
+        });
+    },
+
+
+    addGeoJSONToMap(resul) {
+      // Transforme le résultat en JSON au format attendu par Leaflet
+          this.resultat = {
+            "type": "Feature",
+            "geometry": JSON.parse(resul["geom_json"]),
+            "properties": {}
+          };
+
       // Vérifie la validité du JSON
       if (this.resultat) {
         console.log("Ajout des données JSON :", this.resultat);
 
         // Ajoute les données à la carte
-        L.geoJSON(this.resultat).addTo(this.map);
+        return L.geoJSON(this.resultat).addTo(this.map);
       } else {
         console.warn("Les données GeoJSON sont invalides ou inexistantes.");
       }
-    }
-    
-    
+    },
 
 
 
 
-    
+
+
+
+
   }
 }).mount('#appmap');
 
