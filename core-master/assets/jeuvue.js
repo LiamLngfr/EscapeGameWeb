@@ -54,10 +54,10 @@ testfetch.component('testfetch', {
         }})
         .then(r => r.json())
         .then(r => {
-        console.log(r['resultat'][0])
-        let resultat = r['resultat'][0]
+        console.log(r['resultat'][0]['geom_json'])
+        let resultat = r['resultat'][0]['geom_json']
 
-        console.print('coucou')
+        console.log('coucou')
       });
       }
     }
