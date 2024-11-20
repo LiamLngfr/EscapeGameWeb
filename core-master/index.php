@@ -61,6 +61,51 @@ Flight::route('/objetSuivant', function() {
 });
 
 
+//Modif pdt que Liam code
+/*
+function ajouterPseudo() {
+    $input = json_decode(file_get_contents('php://input'), true); // Récupérer les données envoyées en POST
+    if (isset($input['pseudo']) && !empty($input['pseudo'])) {
+        $pseudo = pg_escape_string($link, $input['pseudo']); // Sécuriser le pseudo
+
+        // Requête SQL pour insérer le pseudo dans la table 'users'
+        $query = "INSERT INTO joueurs (pseudo) VALUES ('$pseudo')";
+        $result = pg_query($link, $query);
+
+        // Réponse JSON en cas de succès ou d'erreur
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout du pseudo.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Le pseudo est requis.']);
+    }
+}
+*/
+Flight::route('POST /add-pseudo', function() {
+
+	$link = Flight::get('db');
+
+	$input = json_decode(file_get_contents('php://input'), true); // Récupérer les données envoyées en POST
+    if (isset($input['pseudo']) && !empty($input['pseudo'])) {
+        $pseudo = pg_escape_string($link, $input['pseudo']); // Sécuriser le pseudo
+
+        // Requête SQL pour insérer le pseudo dans la table 'users'
+        $query = "INSERT INTO joueurs (pseudo) VALUES ('$pseudo')";
+        $result = pg_query($link, $query);
+
+        // Réponse JSON en cas de succès ou d'erreur
+        if ($result) {
+            // En cas de succès, on renvoie un message de succès et un indicateur de redirection
+            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!', 'redirect' => '/jeu']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout du pseudo.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Le pseudo est requis.']);
+    }
+});
 
 
 
