@@ -19,11 +19,15 @@
   </head>
 
   <body>
-    <p>Test</p>
     
+    <div id="titre">
+      <p>Titre provisoire pour tester</p>
+    </div>
     <div id="appmap"></div>
     <div id="map"></div>
-
+    <FOOTER id="footer">
+      <p>Inventaire</p>
+    </FOOTER>
   <!-- Inclure votre fichier JavaScript où vous définissez Vue.js et Leaflet -->
   <script src="assets/jeuvue.js"></script>
   </body>
