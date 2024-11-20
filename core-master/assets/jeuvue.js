@@ -5,6 +5,7 @@ let vue = Vue.createApp({
       feature: L.featureGroup([]),
       map: null,
       point: [],
+      inventaire: [],
     };
   },
 
@@ -27,12 +28,12 @@ let vue = Vue.createApp({
 
       // Ne pas oublier de supprimer ce truc qui sert à rien mais fais plaisir
       var popup = L.popup();
-      this.map.on('click', (e) => {
-        popup
-          .setLatLng(e.latlng)
-          .setContent("Tu as cliqué aux coordonnées " + e.latlng.toString().replace('LatLng', '(Lat,Long) = '))
-          .openOn(this.map);
-      });
+      // this.map.on('click', (e) => {
+      //   popup
+      //     .setLatLng(e.latlng)
+      //     .setContent("Tu as cliqué aux coordonnées " + e.latlng.toString().replace('LatLng', '(Lat,Long) = '))
+      //     .openOn(this.map);
+      // });
     },
 
     init_pingouin() {
@@ -46,7 +47,7 @@ let vue = Vue.createApp({
         .then(r => r.json())
         .then(r => {
           const resul = r['resultat'][0]; // Résultat requête SQL
-          // console.log(resul);
+          this.point.push(resul)
 
           // Vérifie que la carte est bien là
           if (this.map) {
@@ -59,10 +60,12 @@ let vue = Vue.createApp({
               //On associe le popup au marker un seule fois, pour ne pas le refaire à chaque clic
               const contenu_popup = "C'est moi le pingouin !"
               marker.bindPopup(contenu_popup);
+              this.addMarker(marker)
 
-              marker.on('click', function() {
-                marker.openPopup();
-              });
+              // marker.on('click', () => {
+              //   marker.openPopup();
+              //   this.obj_suivant(marker.getLayers()[0].feature.properties.id);
+              // });
             } else {
               console.warn("Le GeoJSON n'a pas généré de marqueur.");
             }
@@ -86,31 +89,45 @@ let vue = Vue.createApp({
       }})
         .then(r => r.json())
         .then(r => {
-          const resul = r['resultat'][0];
-          this.point.push(resul)
-          console.log(this.point) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le tableau associatif (Tu peux remplacer .json par .txt pour mieux visualiser)
+          console.log(r)
+          r['resultat'].forEach((element) => {
+            this.point.push(element)
+            
+            if (this.map) {
+              let marker = this.addGeoJSONToMap(this.point[this.point.length - 1]);
+              this.addMarker(marker)
+            }
+
+          });
           
-          if (this.map) {
-            this.addGeoJSONToMap(point[point.length - 1]);
-          }
+          
         });
     },
+
+    addMarker(marker){
+      // marker.bindPopup(popup)
+      marker.on('click', () => {
+        marker.openPopup();
+        this.obj_suivant(marker.getLayers()[0].feature.properties.id);
+      });
+    },
+
 
 
     addGeoJSONToMap(resul) {
       // Transforme le résultat en JSON au format attendu par Leaflet
-          this.resultat = {
+          let resultat = {
             "type": "Feature",
             "geometry": JSON.parse(resul["geom_json"]),
-            "properties": {}
+            "properties": resul
           };
-
+          // console.log(resultat)
       // Vérifie la validité du JSON
-      if (this.resultat) {
-        console.log("Ajout des données JSON :", this.resultat);
+      if (resultat) {
+        // console.log("Ajout des données JSON :", resultat);
 
         // Ajoute les données à la carte
-        return L.geoJSON(this.resultat).addTo(this.map);
+        return L.geoJSON(resultat).addTo(this.map);
       } else {
         console.warn("Les données GeoJSON sont invalides ou inexistantes.");
       }
