@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS public.joueurs;
 CREATE TABLE IF NOT EXISTS public.joueurs
 (
     id SERIAL PRIMARY KEY,
-    pseudo VARCHAR(255) NOT NULL
+    pseudo VARCHAR(255) NOT NULL,
+    score INT
 )
 
 TABLESPACE pg_default;
