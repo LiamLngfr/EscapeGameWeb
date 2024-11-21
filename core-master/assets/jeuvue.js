@@ -1,3 +1,6 @@
+let map = L.map('map').setView([-25, 50], 3); //Sur Paris : [48.85, 2.35]
+
+
 let vue = Vue.createApp({
   data() {
     return {
@@ -6,6 +9,7 @@ let vue = Vue.createApp({
       map: null,
       point: [],
       inventaire: [],
+      lock: []
     };
   },
 
@@ -19,20 +23,19 @@ let vue = Vue.createApp({
 
   methods: {
     initMap() {
-      this.map = L.map('map').setView([-25, 50], 3); //Sur Paris : [48.85, 2.35]
-
+      
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(this.map);
+      }).addTo(map);
 
       // Ne pas oublier de supprimer ce truc qui sert à rien mais fais plaisir
       var popup = L.popup();
-      // this.map.on('click', (e) => {
+      // map.on('click', (e) => {
       //   popup
       //     .setLatLng(e.latlng)
       //     .setContent("Tu as cliqué aux coordonnées " + e.latlng.toString().replace('LatLng', '(Lat,Long) = '))
-      //     .openOn(this.map);
+      //     .openOn(map);
       // });
     },
 
@@ -50,7 +53,7 @@ let vue = Vue.createApp({
           this.point.push(resul)
 
           // Vérifie que la carte est bien là
-          if (this.map) {
+          if (map) {
             // Ajoute le GeoJSON + récupère le marqueur
             let marker = this.addGeoJSONToMap(resul);
 
@@ -89,15 +92,16 @@ let vue = Vue.createApp({
       }})
         .then(r => r.json())
         .then(r => {
-          console.log(r)
           r['resultat'].forEach((element) => {
             this.point.push(element)
-            
-            if (this.map) {
-              let marker = this.addGeoJSONToMap(this.point[this.point.length - 1]);
-              this.addMarker(marker)
-            }
-
+            if (element['locked'] === 'f') {
+              if (map) {
+                let marker = this.addGeoJSONToMap(this.point[this.point.length - 1]);
+                this.addMarker(marker)
+              };
+            } else {
+              this.lock.push(element)
+            };
           });
           
           
@@ -127,7 +131,7 @@ let vue = Vue.createApp({
         // console.log("Ajout des données JSON :", resultat);
 
         // Ajoute les données à la carte
-        return L.geoJSON(resultat).addTo(this.map);
+        return L.geoJSON(resultat).addTo(map);
       } else {
         console.warn("Les données GeoJSON sont invalides ou inexistantes.");
       }
