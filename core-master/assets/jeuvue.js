@@ -76,7 +76,6 @@ let vue = Vue.createApp({
               marker.bindPopup(popupContent)
 
               // Gestionnaire d'événement lorsque le popup est ouvert
-              console.log(marker)
               marker.on('popupopen',  () => {
                 // Attendez que le DOM du popup soit chargé
                 setTimeout(() => {
@@ -93,7 +92,8 @@ let vue = Vue.createApp({
                           this.lock.forEach(element => {
                             // element['locked'] = 't';
                             // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
-                            this.addGeoJSONToMap(element);
+                            var marker2 = this.addGeoJSONToMap(element);
+                            this.addMarkerSuivant(marker2);
                             
                           });
                           this.lock = []
@@ -150,7 +150,6 @@ let vue = Vue.createApp({
               };
             } else {
               this.lock.push(element);
-              console.log(element);
             };
           });
           
@@ -163,6 +162,21 @@ let vue = Vue.createApp({
       marker.on('click', () => {
         marker.openPopup();
         this.obj_suivant(marker.getLayers()[0].feature.properties.id);
+        if (marker.getLayers()[0].feature.properties.pickable === 't' && !this.inventaire.includes(marker.getLayers()[0].feature.properties)) {
+          this.inventaire.push(marker.getLayers()[0].feature.properties);
+        };
+
+        this.inventaire.forEach(element => {
+          if (marker.getLayers()[0].feature.properties.item_to_unlock_id === element['id']){
+            this.lock.forEach(element => {
+              // element['locked'] = 't';
+              // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
+              var marker2 = this.addGeoJSONToMap(element);
+              this.addMarkerSuivant(marker2);});
+
+          };
+        });
+        
       });
     },
 
@@ -184,7 +198,7 @@ let vue = Vue.createApp({
         return L.geoJSON(resultat).addTo(map);
       } else {
         console.warn("Les données GeoJSON sont invalides ou inexistantes.");
-      }
+      };
     },
 
 
@@ -196,20 +210,3 @@ let vue = Vue.createApp({
 
   }
 }).mount('#appmap');
-
-/*
-//Requête Fetch à la base de donnée (à mettre dans une fonction qui se déclenche quand on appuie sur une balise (items))
-//Remplacer LeNomDeTaVariable
-fetch('/objetSuivant', {
-  method: 'post',
-  body: 'IdPoint=' + '6',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  
-  }})
-  .then(r => r.json())
-  .then(r => {
-  console.log(r) //Affiche le resultat, plus qu'à aller le chercher. Il faut s'enfoncer dans le tableau associatif (Tu peux remplacer .json par .txt pour mieux visualiser)
-  let resultat = r['resultat'][0]
-});
-*/
