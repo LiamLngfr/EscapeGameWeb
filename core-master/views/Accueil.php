@@ -8,6 +8,8 @@
 
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <link rel="stylesheet" href="assets/accueil.css">
   </head>
 
   <body>
@@ -15,7 +17,7 @@
     	<h2>Jouer au jeu</h2>
     	<div id="apphof">
     		<form action='/jeu' @submit.prevent="ajouterPseudo">
-            	<label for="pseudo">Pseudo :</label>
+            	<label for="pseudo">Pseudo : </label>
             	<input type="text" id="pseudo" v-model="pseudo" required />
             	<button type="submit">Envoyer</button>
         	</form>
@@ -26,9 +28,22 @@
     </p>
     <p>
     	<h2>Hall of Fame</h2>
-    		
-    		
-
+    		<table>
+                <thead>
+                    <tr>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Classement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Test</th>
+                        <td>test</td>
+                        <td>test</td>
+                    </tr>
+                </tbody>
+            </table>
     </p>
 
   </body>

@@ -18,9 +18,7 @@ Flight::route('/accueil', function() {
 Flight::route('/jeu', function() {
 	Flight::render('jeu');
 });
-Flight::route('/test', function() {
-	Flight::render('testvueleaflet');
-});
+
 
 Flight::route('/premierObjet', function(){
 	$IdPoint = '1';
@@ -107,6 +105,9 @@ Flight::route('POST /add-pseudo', function() {
     }
 });
 
+Flight::route('/temps', function() {
+	Flight::render('test_temps');
+});
 
 
 Flight::start();

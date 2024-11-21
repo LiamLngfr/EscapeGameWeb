@@ -1,4 +1,4 @@
-const app = Vue.createApp({
+const app_pseudo = Vue.createApp({
     data() {
         return {
             pseudo: '', // Le pseudo entré par l'utilisateur
@@ -19,16 +19,16 @@ const app = Vue.createApp({
             		})
         		});
 
-        		// Vérifier si la réponse est OK (statut 200)
+        		// Vérifier si la réponse est OK
         		if (!response.ok) {
-            		// Si la réponse n'est pas OK, afficher un message d'erreur avec le statut
-		            		console.error('Erreur de requête, statut:', response.status);
-		            const errorText = await response.text(); // Lire la réponse en texte brut
+            		// Si non : affichage de l'erreur
+		            console.error('Erreur de requête, statut:', response.status);
+		            const errorText = await response.text();
         		    console.log('Réponse brute:', errorText);
             		throw new Error('Erreur côté serveur');
         		}
 
-        		// Si la réponse est OK, essayer de la convertir en JSON
+        		// Si OK, conversion en JSON
         		const data = await response.json();
         		console.log('Données reçues:', data);
 
@@ -49,8 +49,8 @@ const app = Vue.createApp({
     }
 });
 
-// Monter l'application Vue sur le DOM
-app.mount('#apphof');
+
+app_pseudo.mount('#apphof');
 
 
 
