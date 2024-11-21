@@ -9,7 +9,8 @@ let vue = Vue.createApp({
       map: null,
       point: [],
       inventaire: [],
-      lock: []
+      lock: [],
+      code: null
     };
   },
 
@@ -30,7 +31,7 @@ let vue = Vue.createApp({
       }).addTo(map);
 
       // Ne pas oublier de supprimer ce truc qui sert à rien mais fais plaisir
-      var popup = L.popup();
+      // var popup = L.popup();
       // map.on('click', (e) => {
       //   popup
       //     .setLatLng(e.latlng)
@@ -61,9 +62,57 @@ let vue = Vue.createApp({
             if (marker) {
 
               //On associe le popup au marker un seule fois, pour ne pas le refaire à chaque clic
-              const contenu_popup = "C'est moi le pingouin !"
-              marker.bindPopup(contenu_popup);
-              this.addMarker(marker)
+              // const contenu_popup = "C'est moi le pingouin !"
+              // marker.bindPopup(contenu_popup);
+              
+
+              var popupContent = `
+                <div>
+                  <label for="codeInput">Entrez un code :</label><br>
+                  <input type="C'est moi le pingouin !" id="codeInput" placeholder="Code..." /><br><br>
+                  <button id="confirmButton">Confirmer</button>
+                </div>
+              `;
+              marker.bindPopup(popupContent)
+
+              // Gestionnaire d'événement lorsque le popup est ouvert
+              console.log(marker)
+              marker.on('popupopen',  () => {
+                // Attendez que le DOM du popup soit chargé
+                setTimeout(() => {
+                  // Récupérer les éléments à chaque ouverture
+                  var confirmButton = document.getElementById('confirmButton');
+                  var codeInput = document.getElementById('codeInput');
+
+                  if (confirmButton && codeInput) {
+                    // Ajout du gestionnaire de clic
+                    confirmButton.onclick = () => {
+                      var enteredCode = codeInput.value; // Récupérer la valeur de l'input
+                      if (enteredCode) {
+                        if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
+                          this.lock.forEach(element => {
+                            // element['locked'] = 't';
+                            // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
+                            this.addGeoJSONToMap(element);
+                            
+                          });
+                          this.lock = []
+                           // Cela fonctionnera car `this` est correctement lié
+                        }
+                        marker.closePopup(); // Ferme le popup après confirmation
+                      } else {
+                        alert('Veuillez entrer un code !');
+                      }
+                    };
+                    
+                  } else {
+                    console.error("Les éléments du popup n'ont pas été trouvés.");
+                  }
+                }, 10); // Attendre un petit délai si nécessaire
+              });
+
+              this.addMarkerSuivant(marker); //Ajout du marker suivant
+
 
               // marker.on('click', () => {
               //   marker.openPopup();
@@ -93,14 +142,15 @@ let vue = Vue.createApp({
         .then(r => r.json())
         .then(r => {
           r['resultat'].forEach((element) => {
-            this.point.push(element)
+            this.point.push(element);
             if (element['locked'] === 'f') {
               if (map) {
-                let marker = this.addGeoJSONToMap(this.point[this.point.length - 1]);
-                this.addMarker(marker)
+                let marker = this.addGeoJSONToMap(element);
+                this.addMarkerSuivant(marker);
               };
             } else {
-              this.lock.push(element)
+              this.lock.push(element);
+              console.log(element);
             };
           });
           
@@ -108,7 +158,7 @@ let vue = Vue.createApp({
         });
     },
 
-    addMarker(marker){
+    addMarkerSuivant(marker){
       // marker.bindPopup(popup)
       marker.on('click', () => {
         marker.openPopup();
