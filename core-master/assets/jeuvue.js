@@ -10,7 +10,10 @@ let vue = Vue.createApp({
       point: [],
       inventaire: [],
       lock: [],
-      code: null
+      code: null,
+      wmsLayer: null,
+      afficherWMS: false,
+      triche: false,
     };
   },
 
@@ -30,14 +33,22 @@ let vue = Vue.createApp({
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
 
-      // Ne pas oublier de supprimer ce truc qui sert à rien mais fais plaisir
-      // var popup = L.popup();
-      // map.on('click', (e) => {
-      //   popup
-      //     .setLatLng(e.latlng)
-      //     .setContent("Tu as cliqué aux coordonnées " + e.latlng.toString().replace('LatLng', '(Lat,Long) = '))
-      //     .openOn(map);
-      // });
+      this.wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/LiamGeoserver/wms', {
+        layers: 'LiamGeoserver:items',
+        format: 'image/png',
+        transparent: true,
+      });
+
+      map.on('zoom', () => {
+        this.point.forEach(marker => {
+          console.log(map.getZoom())
+          if (map.getZoom()<6){
+            marker.remove(map)
+          } else {
+            marker.addTo(map)
+          }
+        })
+      },)
     },
 
     init_pingouin() {
@@ -51,12 +62,13 @@ let vue = Vue.createApp({
         .then(r => r.json())
         .then(r => {
           const resul = r['resultat'][0]; // Résultat requête SQL
-          this.point.push(resul)
+          // this.point.push(resul)
 
           // Vérifie que la carte est bien là
           if (map) {
             // Ajoute le GeoJSON + récupère le marqueur
             let marker = this.addGeoJSONToMap(resul);
+            
 
             // Vérifie sla validité du marqueur
             if (marker) {
@@ -142,7 +154,7 @@ let vue = Vue.createApp({
         .then(r => r.json())
         .then(r => {
           r['resultat'].forEach((element) => {
-            this.point.push(element);
+            
             if (element['locked'] === 'f') {
               if (map) {
                 let marker = this.addGeoJSONToMap(element);
@@ -166,11 +178,13 @@ let vue = Vue.createApp({
           this.inventaire.push(marker.getLayers()[0].feature.properties);
         };
 
+        if (marker.getLayers()[0].feature.properties.id === '77'){
+          console.log('You win !')
+        };
+
         this.inventaire.forEach(element => {
           if (marker.getLayers()[0].feature.properties.item_to_unlock_id === element['id']){
             this.lock.forEach(element => {
-              // element['locked'] = 't';
-              // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
               var marker2 = this.addGeoJSONToMap(element);
               this.addMarkerSuivant(marker2);});
 
@@ -189,24 +203,28 @@ let vue = Vue.createApp({
             "geometry": JSON.parse(resul["geom_json"]),
             "properties": resul
           };
-          // console.log(resultat)
       // Vérifie la validité du JSON
       if (resultat) {
-        // console.log("Ajout des données JSON :", resultat);
-
         // Ajoute les données à la carte
-        return L.geoJSON(resultat).addTo(map);
+        let marker = L.geoJSON(resultat).addTo(map)
+        this.point.push(marker);
+        return marker;
       } else {
         console.warn("Les données GeoJSON sont invalides ou inexistantes.");
       };
     },
 
+    toggleWMS() {
+      console.log(this.point);
+      if (this.triche === true) {
+        this.wmsLayer.removeFrom(map)
+      } else {
+        this.wmsLayer.addTo(map)
+      }
+    },
+
+    
 
 
-
-
-
-
-
-  }
+  },
 }).mount('#appmap');

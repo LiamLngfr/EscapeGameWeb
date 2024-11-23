@@ -22,8 +22,11 @@
     
     <div id="titre">
       <p>Titre provisoire pour tester</p>
+      
     </div>
-    <div id="appmap"></div>
+    <div id="appmap">
+      <input type="checkbox" v-model="triche" @input="toggleWMS()"> Triche
+    </div>
     <div id="map"></div>
     <FOOTER id="footer">
       <p>Inventaire</p>
