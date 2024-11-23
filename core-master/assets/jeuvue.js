@@ -70,7 +70,7 @@ let vue = Vue.createApp({
             let marker = this.addGeoJSONToMap(resul);
             
 
-            // Vérifie sla validité du marqueur
+            // Vérifie la validité du marqueur
             if (marker) {
 
               //On associe le popup au marker un seule fois, pour ne pas le refaire à chaque clic
@@ -98,7 +98,7 @@ let vue = Vue.createApp({
                   if (confirmButton && codeInput) {
                     // Ajout du gestionnaire de clic
                     confirmButton.onclick = () => {
-                      var enteredCode = codeInput.value; // Récupérer la valeur de l'input
+                      var enteredCode = codeInput.value; // Récupérer l'input
                       if (enteredCode) {
                         if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
                           this.lock.forEach(element => {
@@ -109,9 +109,8 @@ let vue = Vue.createApp({
                             
                           });
                           this.lock = []
-                           // Cela fonctionnera car `this` est correctement lié
                         }
-                        marker.closePopup(); // Ferme le popup après confirmation
+                        marker.closePopup(); // Ferme le popup
                       } else {
                         alert('Veuillez entrer un code !');
                       }
@@ -197,7 +196,7 @@ let vue = Vue.createApp({
 
 
     addGeoJSONToMap(resul) {
-      // Transforme le résultat en JSON au format attendu par Leaflet
+      // Transforme le résultat en JSON au format de Leaflet
           let resultat = {
             "type": "Feature",
             "geometry": JSON.parse(resul["geom_json"]),
@@ -208,7 +207,7 @@ let vue = Vue.createApp({
         // Ajoute les données à la carte
         let marker = L.geoJSON(resultat, {
             pointToLayer: function (feature, latlng) {
-                // Créer une icône personnalisée en fonction des propriétés
+                // Création de l'icône
                 var icon = L.icon({
                     iconUrl: feature.properties.iconUrl || resul["chemin_img"],
                     iconSize: [resul["taille_icon"],resul["taille_icon"]],
