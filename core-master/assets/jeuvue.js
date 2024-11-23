@@ -1,4 +1,4 @@
-let map = L.map('map').setView([-25, 50], 3); //Sur Paris : [48.85, 2.35]
+let map = L.map('map').setView([48.840260, 2.587640], 18); //Sur Paris : [48.85, 2.35]
 
 
 let vue = Vue.createApp({
@@ -206,7 +206,19 @@ let vue = Vue.createApp({
       // Vérifie la validité du JSON
       if (resultat) {
         // Ajoute les données à la carte
-        let marker = L.geoJSON(resultat).addTo(map)
+        let marker = L.geoJSON(resultat, {
+            pointToLayer: function (feature, latlng) {
+                // Créer une icône personnalisée en fonction des propriétés
+                var icon = L.icon({
+                    iconUrl: feature.properties.iconUrl || resul["chemin_img"],
+                    iconSize: [resul["taille_icon"],resul["taille_icon"]],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
+            return L.marker(latlng, { icon: icon });
+            }
+        })
+        // let marker = L.geoJSON(resultat).addTo(map)
         this.point.push(marker);
         return marker;
       } else {
