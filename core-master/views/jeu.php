@@ -39,7 +39,6 @@
       </ul>
     
     </FOOTER>
-  <!-- Inclure votre fichier JavaScript où vous définissez Vue.js et Leaflet -->
   <script src="assets/jeuvue.js"></script>
   </body>
 
