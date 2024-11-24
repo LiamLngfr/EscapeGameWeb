@@ -1,4 +1,9 @@
-let map = L.map('map').setView([48.840260, 2.587640], 18); //Sur Paris : [48.85, 2.35]
+const southWest = L.latLng(-90, -180); // Limite sud-ouest
+const northEast = L.latLng(90, 180);  // Limite nord-est
+const bounds = L.latLngBounds(southWest, northEast);
+
+let map = L.map('map', {zoomControl: true,zoom:1,zoomAnimation:false,fadeAnimation:true,markerZoomAnimation:true, maxBounds: bounds, maxBoundsViscosity: 1.0 }).setView([48.840260, 2.587640], 18); //Sur Paris : [48.85, 2.35]
+
 
 
 let vue = Vue.createApp({
@@ -8,7 +13,7 @@ let vue = Vue.createApp({
       feature: L.featureGroup([]),
       map: null,
       point: [],
-      inventaire: [],
+      inventaire: [{id: 2, chemin_img: "assets/Image/parchemin.PNG"}],
       lock: [],
       code: null,
       wmsLayer: null,
@@ -45,6 +50,7 @@ let vue = Vue.createApp({
     initMap() {
       
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 2,
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
@@ -57,17 +63,22 @@ let vue = Vue.createApp({
 
       map.on('zoom', () => {
         this.point.forEach(marker => {
-          if (map.getZoom()<marker.getLayers()[0].feature.properties.zoom){
-            marker.remove(map)
-          } else {
-            marker.addTo(map)
-          }
-        })
+            if (map.getZoom()<marker.getLayers()[0].feature.properties.zoom){
+              marker.remove(map)
+            } else {
+              marker.addTo(map)
+            }
+        
+        });
       },);
     
     },
 
     init_pingouin() {
+      L.popup()
+        .setLatLng([48.840221, 2.588224])
+        .setContent("Aventuriers, si vous trouvez ce parchemin, n’ayez pas la bêtise de croire que c’est un hasard. Dans cette quête pleine de péripéties, vous devrez mêler absurde et connaissance, ne pas vous laisser piéger et faire preuve de clairvoyance. Munissez-vous de votre carte du monde, et dirigez-vous vers la contrée des Pingouins pour commencer votre voyage. Si jamais vous vous sentez perdus, n’oubliez pas d’écouter votre cœur.")
+        .openOn(map);
       fetch('/premierObjet', {
         method: 'post',
         body: '',
@@ -95,7 +106,7 @@ let vue = Vue.createApp({
 
               var popupContent = `
                 <div>
-                  <label for="codeInput">Entrez un code :</label><br>
+                  <label for="codeInput"> Salut à toi, je savais que tu viendrais. Avec les ptis gars, on a caché un code dans un pays du monde pour savoir si tu es digne de suivre cette route : trouve-le et reviens me voir, je te dirais où aller. </label><br>
                   <input type="C'est moi le pingouin !" id="codeInput" placeholder="Code..." /><br><br>
                   <button id="confirmButton">Confirmer</button>
                 </div>
@@ -116,6 +127,7 @@ let vue = Vue.createApp({
                       var enteredCode = codeInput.value; // Récupérer l'input
                       if (enteredCode) {
                         if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
+                          marker.bindPopup(resul["dialogue_apres"])
                           this.lock.forEach(element => {
                             // element['locked'] = 't';
                             // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
@@ -125,19 +137,14 @@ let vue = Vue.createApp({
                           });
                           this.lock = []
                         }
-                        marker.closePopup(); // Ferme le popup
-                      } else {
-                        alert('Veuillez entrer un code !');
                       }
                     };
                     
-                  } else {
-                    console.error("Les éléments du popup n'ont pas été trouvés.");
-                  }
+                  } 
                 }, 10); // Attendre un petit délai si nécessaire
               });
-
               this.addMarkerSuivant(marker); //Ajout du marker suivant
+              
 
 
               // marker.on('click', () => {
@@ -172,7 +179,8 @@ let vue = Vue.createApp({
             if (element['locked'] === 'f') {
               if (map) {
                 let marker = this.addGeoJSONToMap(element);
-                this.addMarkerSuivant(marker);
+                  this.addMarkerSuivant(marker);
+                
               };
             } else {
               this.lock.push(element);
@@ -186,25 +194,38 @@ let vue = Vue.createApp({
     addMarkerSuivant(marker){
       // marker.bindPopup(popup)
       marker.on('click', () => {
-        marker.openPopup();
-        this.obj_suivant(marker.getLayers()[0].feature.properties.id);
-        if (marker.getLayers()[0].feature.properties.pickable === 't' && !this.inventaire.includes(marker.getLayers()[0].feature.properties)) {
-          this.inventaire.push(marker.getLayers()[0].feature.properties);
-        };
+          marker.openPopup();
+          this.obj_suivant(marker.getLayers()[0].feature.properties.id);
+          
 
-        if (marker.getLayers()[0].feature.properties.id === '99'){
-          this.endGame()
-        };
+          if (marker.getLayers()[0].feature.properties.id === '99'){
+            
 
-        this.inventaire.forEach(element => {
-          if (marker.getLayers()[0].feature.properties.item_to_unlock_id === element['id']){
-            this.lock.forEach(element => {
-              var marker2 = this.addGeoJSONToMap(element);
-              this.addMarkerSuivant(marker2);});
+            marker.getPopup().on('remove', () => {
+              this.endGame()
+          });
+          };
 
+          
+
+          this.inventaire.forEach(element => {
+            if (marker.getLayers()[0].feature.properties.item_to_unlock_id === element['id']){
+              marker.bindPopup(marker.getLayers()[0].feature.properties.dialogue_apres)
+              this.lock.forEach(element => {
+                var marker2 = this.addGeoJSONToMap(element);
+                if (marker2) {
+                this.addMarkerSuivant(marker2);};
+              });
           };
         });
-        
+
+        if (marker.getLayers()[0].feature.properties.pickable === 't' && !this.inventaire.includes(marker.getLayers()[0].feature.properties)) {
+          const index = this.point.indexOf(marker);
+          this.point.splice(index, 1);
+          marker.remove(map)
+          this.inventaire.push(marker.getLayers()[0].feature.properties);
+        };
+      
       });
     },
 
@@ -229,10 +250,11 @@ let vue = Vue.createApp({
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -32]
                 });
+            
             return L.marker(latlng, { icon: icon });
             }
         })
-        // let marker = L.geoJSON(resultat).addTo(map)
+        marker.bindPopup(resul["dialogue_avant"])
         this.point.push(marker);
         return marker;
       } else {
