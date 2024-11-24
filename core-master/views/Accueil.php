@@ -21,7 +21,6 @@
             	<input type="text" id="pseudo" v-model="pseudo" required />
             	<button type="submit">Envoyer</button>
         	</form>
-        	<!-- <p v-if="message" :class="{ success: success, error: !success }">{{ message }}</p> -->
         </div>
         <script src="../assets/pseudo.js"></script>
     	<a href="/jeu" Title="page_de_jeu">Jouer au jeu</a>
@@ -44,5 +43,4 @@
         <script src="../assets/halloffame.js"></script>
     </p>
   </body>
-
 </html>

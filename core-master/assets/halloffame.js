@@ -6,18 +6,16 @@ const app_hof = Vue.createApp({
     },
 
     mounted() {
-        // Récupérer les joueurs dès que le composant est monté
-        fetch('/players')  // Appel à l'API Flight PHP
+        fetch('/players')
             .then(response => response.json())
             .then(data => {
-                this.players = data;  // Stocker les données récupérées dans la variable `players`
+                this.players = data;
                 console.log(this.players); // Affiche tous les joueurs récupérés
 
-                // Utiliser nextTick pour être sûr que Vue a mis à jour le DOM
+                // Attente pour être sûr que la structure est créée
                 this.$nextTick(() => {
-                    // Ajouter chaque joueur au tableau
-                    for (let player of this.players) {
-                        this.ajouterLigne(player);
+                    for (let player of this.players) { // On ajoute chaque joueur au tableau
+                        this.addLine(player);
                     }
                 });
             })
@@ -25,33 +23,26 @@ const app_hof = Vue.createApp({
     },
 
     methods: {
-        // Fonction pour ajouter une ligne au tableau
-        ajouterLigne(player) {
-            // Récupérer le tableau et son corps (tbody)
-            const tableau = document.getElementById("hof");
-            const tbody = tableau.getElementsByTagName("tbody")[0];
+        addLine(player) {
+            const table = document.getElementById("hof");
+            const tbody = table.getElementsByTagName("tbody")[0];
 
-            // Créer une nouvelle ligne
-            const nouvelleLigne = document.createElement("tr");
+            const newLine = document.createElement("tr");
 
-            // Créer des cellules pour la nouvelle ligne
-            const cellule1 = document.createElement("th");
-            cellule1.textContent = player['pseudo']; // pseudo du joueur
-            const cellule2 = document.createElement("td");
-            cellule2.textContent = player['score']; // score du joueur
-            const cellule3 = document.createElement("td");
-            cellule3.textContent = tbody.rows.length + 1; // Numéro de la ligne
+            const cell1 = document.createElement("th");
+            cell1.textContent = player['pseudo'];        // Pseudo du joueur
+            const cell2 = document.createElement("td");
+            cell2.textContent = player['score'];         // Score du joueur
+            const cell3 = document.createElement("td");
+            cell3.textContent = tbody.rows.length + 1;   // Rang du joueur : ils sont rangés dans l'ordre de score croissant (+ petit temps) donc il suffit d'indenter
 
-            // Ajouter les cellules à la nouvelle ligne
-            nouvelleLigne.appendChild(cellule1);
-            nouvelleLigne.appendChild(cellule2);
-            nouvelleLigne.appendChild(cellule3);
+            newLine.appendChild(cell1);
+            newLine.appendChild(cell2);
+            newLine.appendChild(cell3);
 
-            // Ajouter la nouvelle ligne au tableau (dans le tbody)
-            tbody.appendChild(nouvelleLigne);
+            tbody.appendChild(newLine);
         }
     }
 });
 
-// Monter l'application Vue.js dans l'élément avec l'ID "apphof"
 app_hof.mount('#apphof');
