@@ -26,6 +26,7 @@
     </div>
     <div id="appmap">
       <input type="checkbox" v-model="triche" @input="toggleWMS()"> Triche
+      <p>Chronomètre : {{ formattedTime }}</p>
     </div>
     <div id="map"></div>
     <FOOTER id="footer">

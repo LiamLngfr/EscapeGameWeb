@@ -36,7 +36,9 @@ const app_pseudo = Vue.createApp({
         		this.success = data.success;
 
         		if (this.success) {
-        		    this.pseudo = '';
+                    localStorage.setItem('pseudo', this.pseudo); // Sauvegarder le pseudo
+                    console.log(this.pseudo)
+                    this.pseudo = '';
         		    window.location.href = '/jeu';
         		}
     		} catch (error) {

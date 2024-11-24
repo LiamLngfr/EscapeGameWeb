@@ -14,6 +14,10 @@ let vue = Vue.createApp({
       wmsLayer: null,
       afficherWMS: false,
       triche: false,
+      startTime: null, // Temps de départ
+      elapsedTime: 0,  // Temps écoulé (ms)
+      isRunning: false, // Si le jeu est fini ou non
+      pseudo: ''
     };
   },
 
@@ -23,6 +27,19 @@ let vue = Vue.createApp({
 
   mounted() {
     this.initMap(); // Charge la carte
+    this.startGame();
+    this.pseudo = localStorage.getItem('pseudo');
+    console.log(this.pseudo);
+  },
+
+  computed: {
+    // Affichage du temps en mm:ss
+    formattedTime() {
+      const totalSeconds = Math.floor(this.elapsedTime / 1000); // Convertir en secondes
+      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
   },
 
   methods: {
@@ -178,7 +195,8 @@ let vue = Vue.createApp({
         };
 
         if (marker.getLayers()[0].feature.properties.id === '77'){
-          console.log('You win !')
+          console.log('You win !');
+          this.endGame()
         };
 
         this.inventaire.forEach(element => {
@@ -234,8 +252,66 @@ let vue = Vue.createApp({
       }
     },
 
-    
+    startGame() {
+      this.isRunning = true;
+      this.startTime = Date.now(); // Enregistre l'heure de début
+      this.elapsedTime = 0; // Remets le temps écoulé à zéro
+      console.log(`Jeu commencé à : ${this.startTime}`);
+    },
 
+    endGame() {
+      if (this.isRunning) {
+        const endTime = Date.now(); // Enregistre l'heure de fin
+        this.elapsedTime = endTime - this.startTime; // Calcul du temps écoulé
+        this.isRunning = false; // Arrêter le jeu
+        console.log(`Jeu terminé à : ${endTime}, Temps écoulé : ${this.elapsedTime} ms`);
+        // alert(`Temps final : ${this.formattedTime}`);
+      }
+    },
+
+    /*
+    getpseudo() {
+      fetch('/add-pseudo', {
+        method: 'post',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+  
+      }})
+        .then(r => r.json())
+        .then(r => {
+            console.log(r)
+            this.pseudo = r['pseudo']
+            console.log(this.pseudo)
+          });
+    },
+    */
+    /*
+    obj_suivant(id_prec) {
+      fetch('/objetSuivant', {
+        method: 'post',
+        body: 'IdPoint=' + id_prec,
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+  
+      }})
+        .then(r => r.json())
+        .then(r => {
+          r['resultat'].forEach((element) => {
+            
+            if (element['locked'] === 'f') {
+              if (map) {
+                let marker = this.addGeoJSONToMap(element);
+                this.addMarkerSuivant(marker);
+              };
+            } else {
+              this.lock.push(element);
+            };
+          });
+          
+          
+        });
+    },
+  */
 
   },
 }).mount('#appmap');

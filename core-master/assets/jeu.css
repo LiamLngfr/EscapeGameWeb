@@ -7,10 +7,11 @@ html, body {
 /* Ces deux là sont nécessaires pour définir la taille de la map*/
 
 #titre {
-	height: 10%;
+	height: 5%;
 	width: 100%;
 	overflow: hidden;
 }
+
 
 #map {
       width: 100%;

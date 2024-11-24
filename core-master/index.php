@@ -89,14 +89,14 @@ Flight::route('POST /add-pseudo', function() {
     if (isset($input['pseudo']) && !empty($input['pseudo'])) {
         $pseudo = pg_escape_string($link, $input['pseudo']); // Sécuriser le pseudo
 
-        // Requête SQL pour insérer le pseudo dans la table 'users'
+        // Requête pour ajouter le pseudo
         $query = "INSERT INTO joueurs (pseudo) VALUES ('$pseudo')";
         $result = pg_query($link, $query);
 
-        // Réponse JSON en cas de succès ou d'erreur
+        // Succès ou erreur
         if ($result) {
             // En cas de succès, on renvoie un message de succès et un indicateur de redirection
-            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!', 'redirect' => '/jeu']);
+            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!'); //, 'redirect' => '/jeu']
         } else {
             echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout du pseudo.']);
         }
