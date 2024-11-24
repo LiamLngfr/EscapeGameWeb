@@ -27,7 +27,7 @@
     	    <form action='/jeu' @submit.prevent="ajouterPseudo">
                 <label for="pseudo">Pseudo : </label>
                 <input type="text" id="pseudo" v-model="pseudo" required placeholder="Entrez votre pseudo" />
-                <button type="submit">Envoyer</button>
+                <button type="submit">Jouer</button>
             </form>
         </div>
         <script src="../assets/pseudo.js"></script>
