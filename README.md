@@ -1,12 +1,12 @@
 # EscapeGameWeb
 Projet Web à l'ENSG Géomatique sur le thème d'un escape game géographique
 
-**Installation :**
+**Installation :**  
 MAMP est réglé pour utiliser la version 7.4.16 de PHP
 *A compléter*
 
 
-**Comment jouer ?**
+**Comment jouer ?**  
  - Installer MAMP en veillant à le configurer sur la bonne version et à suivre les consignes du sujet
  - Installer la config geoserver ?
  - Démarrer MAMP
@@ -17,7 +17,7 @@ MAMP est réglé pour utiliser la version 7.4.16 de PHP
 
 
 
-**Soluce :**
+**Soluce :**  
 Le joueur apparaît au niveau de la parcelle Y, face à l'ENSG Géomatique. Il doit se rendre ensuite à Antananarivo, capitale de Madagascar. 
 Ici, un pingouin va lui demander un code pour poursuivre son aventure. Le code peut être trouvé en Islande, à Reykjavik (sinon, c'est 4731).
 Vous retournez voir le pingouin et lui donnez le code. Il vous dit d'aller à Pékin, où vous récupérerez une "clé" puis à Londres, où vous utiliserez la "clé".
