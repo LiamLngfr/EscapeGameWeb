@@ -1,29 +1,47 @@
-body table {
-	width: 100%;
-	height: 100%;
-	padding: 0;
+html * {
+  background-color: rgba( 119 , 181 , 254, 0.5)
 }
+
+
+/*--------------- Tableau ---------------*/
+
+/*----- Taille + Bordure -----*/
 
 table {
   table-layout: fixed;
   width: 100%;
+  height: 100%;
+  padding: 0;
   border-collapse: collapse;
   border: 3px solid purple;
-}
-
-thead th:nth-child(1) {
-  width: 33%;
-}
-
-thead th:nth-child(2) {
-  width: 33%;
-}
-
-thead th:nth-child(3) {
-  width: 33%;
 }
 
 th, td, tr, thead {
   border: 1px solid black;
   padding: 10px;
+}
+
+/*----- Largeur de chaque colonne -----*/
+
+thead th:nth-child(1) {
+  width: 33%;
+}
+thead th:nth-child(2) {
+  width: 33%;
+}
+thead th:nth-child(3) {
+  width: 33%;
+}
+
+/*----- Couleur -----*/
+
+thead * {
+  background-color: rgba( 1 , 49 , 180, 0.7)
+}
+tbody td {
+  background-color: rgba( 1 , 49 , 180, 0.5)
+}
+
+tbody th {
+  background-color: rgba( 1 , 49 , 180, 0.6) /*#FFD700*/
 }
