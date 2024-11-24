@@ -266,52 +266,38 @@ let vue = Vue.createApp({
         this.isRunning = false; // Arrêter le jeu
         console.log(`Jeu terminé à : ${endTime}, Temps écoulé : ${this.elapsedTime} ms`);
         // alert(`Temps final : ${this.formattedTime}`);
+
+        this.saveScore();
       }
     },
 
-    /*
-    getpseudo() {
-      fetch('/add-pseudo', {
-        method: 'post',
+    saveScore() {
+      const data = {
+        pseudo: this.pseudo,           // Pseudo du joueur
+        time: this.formattedTime       // Temps formaté (mm:ss)
+      };
+
+      // Envoi des données via une requête POST au serveur (vers la route Flight /save-score)
+      fetch('/save-score', {
+        method: 'POST',
         headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-  
-      }})
-        .then(r => r.json())
-        .then(r => {
-            console.log(r)
-            this.pseudo = r['pseudo']
-            console.log(this.pseudo)
-          });
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)  // Envoi du pseudo et du temps en JSON
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Score enregistré avec succès');
+        } else {
+          console.error('Erreur lors de l\'enregistrement du score');
+        }
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'envoi des données', error);
+      });
     },
-    */
-    /*
-    obj_suivant(id_prec) {
-      fetch('/objetSuivant', {
-        method: 'post',
-        body: 'IdPoint=' + id_prec,
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-  
-      }})
-        .then(r => r.json())
-        .then(r => {
-          r['resultat'].forEach((element) => {
-            
-            if (element['locked'] === 'f') {
-              if (map) {
-                let marker = this.addGeoJSONToMap(element);
-                this.addMarkerSuivant(marker);
-              };
-            } else {
-              this.lock.push(element);
-            };
-          });
-          
-          
-        });
-    },
-  */
+
 
   },
 }).mount('#appmap');

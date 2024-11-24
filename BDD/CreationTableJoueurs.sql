@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS public.joueurs
 (
     id SERIAL PRIMARY KEY,
     pseudo VARCHAR(255) NOT NULL,
-    score INT
+    score VARCHAR(5)
 )
 
 TABLESPACE pg_default;
