@@ -14,4 +14,8 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.joueurs
     OWNER to postgres;
 
-DELETE FROM joueurs; --J'ai copié ton truc pour items, mais pas sûr que cette ligne soit vraiment utile
+DELETE FROM joueurs;
+
+INSERT INTO joueurs (pseudo,score) VALUES ('Max Verstappen', '01:11');
+INSERT INTO joueurs (pseudo,score) VALUES ('Snoop', '04:20');
+INSERT INTO joueurs (pseudo,score) VALUES ('Usain Bolt', '00:09');

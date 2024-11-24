@@ -15,7 +15,7 @@
   <body>
     <p>
     	<h2>Jouer au jeu</h2>
-    	<div id="apphof">
+    	<div id="apppseudo">
     		<form action='/jeu' @submit.prevent="ajouterPseudo">
             	<label for="pseudo">Pseudo : </label>
             	<input type="text" id="pseudo" v-model="pseudo" required />
@@ -23,12 +23,13 @@
         	</form>
         	<!-- <p v-if="message" :class="{ success: success, error: !success }">{{ message }}</p> -->
         </div>
-        <script src="../assets/halloffame.js"></script>
+        <script src="../assets/pseudo.js"></script>
     	<a href="/jeu" Title="page_de_jeu">Jouer au jeu</a>
     </p>
     <p>
-    	<h2>Hall of Fame</h2>
-    		<table>
+        <div id='apphof'>
+    	    <h2>Hall of Fame</h2>
+    	    <table id="hof">
                 <thead>
                     <tr>
                         <th scope="col">Pseudo</th>
@@ -36,16 +37,12 @@
                         <th scope="col">Classement</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Test</th>
-                        <td>test</td>
-                        <td>test</td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
+            <button @click="ajouterLigne">Ajouter une ligne</button>
+        </div>
+        <script src="../assets/halloffame.js"></script>
     </p>
-
   </body>
 
 </html>

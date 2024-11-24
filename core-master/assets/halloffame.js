@@ -1,84 +1,57 @@
-const app_pseudo = Vue.createApp({
+const app_hof = Vue.createApp({
     data() {
         return {
-            pseudo: '', // Le pseudo entré par l'utilisateur
-            message: '', // Message de succès ou d'erreur
-            success: false // Indique si l'opération a réussi
+            players: [] // Liste des joueurs vide au départ
         };
     },
+
+    mounted() {
+        // Récupérer les joueurs dès que le composant est monté
+        fetch('/players')  // Appel à l'API Flight PHP
+            .then(response => response.json())
+            .then(data => {
+                this.players = data;  // Stocker les données récupérées dans la variable `players`
+                console.log(this.players); // Affiche tous les joueurs récupérés
+
+                // Utiliser nextTick pour être sûr que Vue a mis à jour le DOM
+                this.$nextTick(() => {
+                    // Ajouter chaque joueur au tableau
+                    for (let player of this.players) {
+                        this.ajouterLigne(player);
+                    }
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des joueurs:', error));
+    },
+
     methods: {
-        async ajouterPseudo() {
-    		try {
-        		const response = await fetch('/add-pseudo', {
-            		method: 'POST',
-            		headers: {
-                		'Content-Type': 'application/json'
-            		},
-            		body: JSON.stringify({
-                		pseudo: this.pseudo
-            		})
-        		});
+        // Fonction pour ajouter une ligne au tableau
+        ajouterLigne(player) {
+            // Récupérer le tableau et son corps (tbody)
+            const tableau = document.getElementById("hof");
+            const tbody = tableau.getElementsByTagName("tbody")[0];
 
-        		// Vérifier si la réponse est OK
-        		if (!response.ok) {
-            		// Si non : affichage de l'erreur
-		            console.error('Erreur de requête, statut:', response.status);
-		            const errorText = await response.text();
-        		    console.log('Réponse brute:', errorText);
-            		throw new Error('Erreur côté serveur');
-        		}
+            // Créer une nouvelle ligne
+            const nouvelleLigne = document.createElement("tr");
 
-        		// Si OK, conversion en JSON
-        		const data = await response.json();
-        		console.log('Données reçues:', data);
+            // Créer des cellules pour la nouvelle ligne
+            const cellule1 = document.createElement("th");
+            cellule1.textContent = player['pseudo']; // pseudo du joueur
+            const cellule2 = document.createElement("td");
+            cellule2.textContent = player['score']; // score du joueur
+            const cellule3 = document.createElement("td");
+            cellule3.textContent = tbody.rows.length + 1; // Numéro de la ligne
 
-        		this.message = data.message;
-        		this.success = data.success;
+            // Ajouter les cellules à la nouvelle ligne
+            nouvelleLigne.appendChild(cellule1);
+            nouvelleLigne.appendChild(cellule2);
+            nouvelleLigne.appendChild(cellule3);
 
-        		if (this.success) {
-                    localStorage.setItem('pseudo', this.pseudo); // Sauvegarder le pseudo
-                    console.log(this.pseudo)
-                    this.pseudo = '';
-        		    window.location.href = '/jeu';
-        		}
-    		} catch (error) {
-        		this.message = "Erreur lors de l'ajout du pseudo.";
-        		this.success = false;
-        		console.error('Fetch Error:', error);
-    		}
-		}
-
+            // Ajouter la nouvelle ligne au tableau (dans le tbody)
+            tbody.appendChild(nouvelleLigne);
+        }
     }
 });
 
-
-app_pseudo.mount('#apphof');
-
-
-
-
-
-
-/*
-let hof = Vue.createApp({
-	data () {
-
-	};
-
-	updated() {
-		this.load_pseudo();
-	}
-
-
-
-
-	methods: {
-		load_pseudo() {
-
-		}
-	}
-
-
-});
-
-*/
+// Monter l'application Vue.js dans l'élément avec l'ID "apphof"
+app_hof.mount('#apphof');
