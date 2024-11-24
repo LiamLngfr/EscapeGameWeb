@@ -96,7 +96,7 @@ Flight::route('POST /add-pseudo', function() {
         // Succès ou erreur
         if ($result) {
             // En cas de succès, on renvoie un message de succès et un indicateur de redirection
-            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!'); //, 'redirect' => '/jeu']
+            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!']); //, 'redirect' => '/jeu'
         } else {
             echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout du pseudo.']);
         }
