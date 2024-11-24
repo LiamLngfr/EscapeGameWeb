@@ -29,7 +29,6 @@ let vue = Vue.createApp({
     this.initMap(); // Charge la carte
     this.startGame();
     this.pseudo = localStorage.getItem('pseudo');
-    console.log(this.pseudo);
   },
 
   computed: {
@@ -64,7 +63,8 @@ let vue = Vue.createApp({
             marker.addTo(map)
           }
         })
-      },)
+      },);
+    
     },
 
     init_pingouin() {
@@ -192,8 +192,7 @@ let vue = Vue.createApp({
           this.inventaire.push(marker.getLayers()[0].feature.properties);
         };
 
-        if (marker.getLayers()[0].feature.properties.id === '77'){
-          console.log('You win !');
+        if (marker.getLayers()[0].feature.properties.id === '99'){
           this.endGame()
         };
 
