@@ -1,5 +1,4 @@
-
-let map = L.map('map').setView([48.840260, 2.587640], 18); // Sur Paris : [48.85, 2.35]
+let map = L.map('map').setView([48.840260, 2.587640], 18); //Sur Paris : [48.85, 2.35]
 
 
 let vue = Vue.createApp({
@@ -80,8 +79,9 @@ let vue = Vue.createApp({
         .then(r => {
           const resul = r['resultat'][0]; // Résultat requête SQL
           // this.point.push(resul)
+          // Vérifie que la carte est bien là
           if (map) {
-            // Ajout GeoJSON + récupère marqueur
+            // Ajoute le GeoJSON + récupère le marqueur
             let marker = this.addGeoJSONToMap(resul);
             
 
@@ -102,16 +102,18 @@ let vue = Vue.createApp({
               `;
               marker.bindPopup(popupContent)
 
+              // Gestionnaire d'événement lorsque le popup est ouvert
               marker.on('popupopen',  () => {
-                // Attente que la structure soit chargée
+                // Attendez que le DOM du popup soit chargé
                 setTimeout(() => {
+                  // Récupérer les éléments à chaque ouverture
                   var confirmButton = document.getElementById('confirmButton');
                   var codeInput = document.getElementById('codeInput');
 
                   if (confirmButton && codeInput) {
-                    // Ajout gestionnaire de clic
+                    // Ajout du gestionnaire de clic
                     confirmButton.onclick = () => {
-                      var enteredCode = codeInput.value; // Récupère l'input
+                      var enteredCode = codeInput.value; // Récupérer l'input
                       if (enteredCode) {
                         if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
                           this.lock.forEach(element => {
@@ -123,7 +125,7 @@ let vue = Vue.createApp({
                           });
                           this.lock = []
                         }
-                        marker.closePopup();
+                        marker.closePopup(); // Ferme le popup
                       } else {
                         alert('Veuillez entrer un code !');
                       }
@@ -215,7 +217,9 @@ let vue = Vue.createApp({
             "geometry": JSON.parse(resul["geom_json"]),
             "properties": resul
           };
+      // Vérifie la validité du JSON
       if (resultat) {
+        // Ajoute les données à la carte
         let marker = L.geoJSON(resultat, {
             pointToLayer: function (feature, latlng) {
                 // Création de l'icône
@@ -246,8 +250,8 @@ let vue = Vue.createApp({
 
     startGame() {
       this.isRunning = true;
-      this.startTime = Date.now();  // Enregistre l'heure de début
-      this.elapsedTime = 0;  // Remets le temps écoulé à zéro
+      this.startTime = Date.now(); // Enregistre l'heure de début
+      this.elapsedTime = 0; // Remets le temps écoulé à zéro
       console.log(`Jeu commencé à : ${this.startTime}`);
     },
 
@@ -269,13 +273,13 @@ let vue = Vue.createApp({
         time: this.formattedTime       // Temps formaté (mm:ss)
       };
 
-      // Envoi des données
+      // Envoi des données via une requête POST au serveur (vers la route Flight /save-score)
       fetch('/save-score', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data)  // Envoi du pseudo et du temps en JSON
       })
       .then(response => response.json())
       .then(data => {
