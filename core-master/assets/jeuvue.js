@@ -58,8 +58,7 @@ let vue = Vue.createApp({
 
       map.on('zoom', () => {
         this.point.forEach(marker => {
-          console.log(map.getZoom())
-          if (map.getZoom()<6){
+          if (map.getZoom()<marker.getLayers()[0].feature.properties.zoom){
             marker.remove(map)
           } else {
             marker.addTo(map)
@@ -80,7 +79,6 @@ let vue = Vue.createApp({
         .then(r => {
           const resul = r['resultat'][0]; // Résultat requête SQL
           // this.point.push(resul)
-
           // Vérifie que la carte est bien là
           if (map) {
             // Ajoute le GeoJSON + récupère le marqueur
@@ -244,7 +242,6 @@ let vue = Vue.createApp({
     },
 
     toggleWMS() {
-      console.log(this.point);
       if (this.triche === true) {
         this.wmsLayer.removeFrom(map)
       } else {

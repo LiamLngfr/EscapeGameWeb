@@ -27,10 +27,17 @@
     <div id="appmap">
       <input type="checkbox" v-model="triche" @input="toggleWMS()"> Triche
       <p>Chronomètre : {{ formattedTime }}</p>
+      <ul v-for= "item in inventaire">
+        <img v-bind:src="item.chemin_img" alt="" height="50px" width="50px">
+      </ul>
+      
     </div>
     <div id="map"></div>
     <FOOTER id="footer">
-      <p>Inventaire</p>
+      <ul>
+        
+      </ul>
+    
     </FOOTER>
   <!-- Inclure votre fichier JavaScript où vous définissez Vue.js et Leaflet -->
   <script src="assets/jeuvue.js"></script>
