@@ -35,4 +35,5 @@ INSERT INTO items VALUES (58, 'Fusee', null, null, null, 75, true, false, 6, 'as
 INSERT INTO items VALUES (98, 'Coca', null, null, null, 58, false, false, 7, 'assets/Image/cocac.png', 64, ST_SetSRID(ST_MakePoint(-99.140625,19.435514 ), 4326));
 INSERT INTO items VALUES (6, 'Kangourou', null, null, null, 98, false, false, 9, 'assets/Image/kangourou.png', 64, ST_SetSRID(ST_MakePoint(149.106445,-35.290469 ), 4326));
 INSERT INTO items VALUES (77, 'Portugais', null, null, null, 6, false, false, 7, 'assets/Image/favicon.ico', 64, ST_SetSRID(ST_MakePoint(-47.900391,-15.876809 ), 4326));
+INSERT INTO items VALUES (99, 'ENSG', null, null, null, 77, false, false, 9, 'assets/Image/ensg.png', 64, ST_SetSRID(ST_MakePoint(2.588224, 48.840221), 4326));
 
