@@ -14,31 +14,24 @@
     <link rel="stylesheet" href="assets/jeu.css">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-
   </head>
 
   <body>
-    
     <div id="titre">
-      <p>Titre provisoire pour tester</p>
-      
+      <h2>Le faucon d'argent</h2>
     </div>
     <div id="appmap">
-      <input type="checkbox" v-model="triche" @input="toggleWMS()"> Triche
-      <p>Chronomètre : {{ formattedTime }}</p>
-      <ul v-for= "item in inventaire">
-        <img v-bind:src="item.chemin_img" alt="" height="50px" width="50px">
-      </ul>
-      
+      <div id="inventaire">
+        <h3>Inventaire</h3>
+        <ul v-for= "item in inventaire">
+          <img v-bind:src="item.chemin_img" alt="" height="50px" width="50px">
+        </ul>
+      </div>
+      <div id="triche">
+        <input type="checkbox" v-model="triche" @input="toggleWMS()">Triche
+      </div>
     </div>
     <div id="map"></div>
-    <FOOTER id="footer">
-      <ul>
-        
-      </ul>
-    
-    </FOOTER>
   <script src="assets/jeuvue.js"></script>
   </body>
 

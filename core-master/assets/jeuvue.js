@@ -264,6 +264,7 @@ let vue = Vue.createApp({
         // alert(`Temps final : ${this.formattedTime}`);
 
         this.saveScore();
+        window.location.href = '/accueil';
       }
     },
 

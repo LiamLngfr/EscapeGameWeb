@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS public.joueurs
 (
     id SERIAL PRIMARY KEY,
     pseudo VARCHAR(255) NOT NULL,
-    score VARCHAR(5)
+    score VARCHAR(9)
 )
 
 TABLESPACE pg_default;
@@ -16,6 +16,6 @@ ALTER TABLE IF EXISTS public.joueurs
 
 DELETE FROM joueurs;
 
-INSERT INTO joueurs (pseudo,score) VALUES ('Max Verstappen', '01:11');
+INSERT INTO joueurs (pseudo,score) VALUES ('Max Verstappen', '01:11.365');
 INSERT INTO joueurs (pseudo,score) VALUES ('Snoop', '04:20');
-INSERT INTO joueurs (pseudo,score) VALUES ('Usain Bolt', '00:09');
+INSERT INTO joueurs (pseudo,score) VALUES ('Usain Bolt', '00:09.58');

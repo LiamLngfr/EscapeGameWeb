@@ -14,12 +14,19 @@
     <body>
         <header>
             <h1>Le faucon d'argent</h1>
+            <p>
+                Après une soirée animée sur la parcelle Y du campus de l’ENSG, les Ensgagés ont décidé d’organiser une cleanwalk pour venir à bout des déchets omniprésents à cet endroit (sans doute à cause des autres écoles…). Vous vous dîtes que pour vous remettre en forme après vos légendaires pas de danse de la veille, ça ne pourrait pas vous faire de mal d’y participer.
+                Alors que vous alternez entre capsules de bière et mégots, un bout de papier froissé attire votre attention : vous le ramassez en essayant de garder l’équilibre et constatez que c’est sans doute la seule chose en bon état sur la parcelle en ce moment. Cette boule de papier froissée s’avère être un antique parchemin qui semble mener à un trésor inestimable : le faucon d’argent.
+            </p>
+            <p>
+                Ni une, ni deux, et parce que manquer quelques cours ne vous fait pas peur, vous décidez de partir pour cette aventure !
+            </p>
         </header>
-        <h2>Jouer au jeu</h2>
         <div id="apppseudo">
-    	   <form action='/jeu' @submit.prevent="ajouterPseudo">
+            <h2>Jouer au jeu</h2>
+    	    <form action='/jeu' @submit.prevent="ajouterPseudo">
                 <label for="pseudo">Pseudo : </label>
-                <input type="text" id="pseudo" v-model="pseudo" required />
+                <input type="text" id="pseudo" v-model="pseudo" required placeholder="Entrez votre pseudo" />
                 <button type="submit">Envoyer</button>
             </form>
         </div>

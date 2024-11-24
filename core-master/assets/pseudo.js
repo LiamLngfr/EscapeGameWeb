@@ -1,7 +1,7 @@
 const app_pseudo = Vue.createApp({
     data() {
         return {
-            pseudo: localStorage.getItem('pseudo') || '', // Récupère le pseudo depuis LocalStorage
+            pseudo: '', // Récupère le pseudo depuis LocalStorage
             message: '',
             success: false
         };
@@ -42,6 +42,7 @@ const app_pseudo = Vue.createApp({
                     localStorage.setItem('pseudo', this.pseudo); // Sauvegarder le pseudo pour les autres fichiers : pratique de ouf
                     this.pseudo = ''; // Réinitialiser le champ
                     window.location.href = '/jeu'; // Redirection vers la page de jeu
+
                 }
             } catch (error) {
                 this.message = "Erreur lors de l'ajout du pseudo.";

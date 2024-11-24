@@ -1,7 +1,72 @@
-html * {
-  background-color: rgba( 119 , 181 , 254, 0.5)
+/*--------------- Général ---------------*/
+
+html {
+  height: 100%;
 }
 
+body {
+  background-color: rgba(119, 181, 254, 0.5);
+  height: 100%;
+  margin: 0; /* Éviter un éventuel espace autour de l'écran */
+}
+
+header {
+  height: 22%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header h1 {
+  margin:0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding:0;
+}
+
+header p {
+  margin: 0;
+  text-align: center;
+  width: 85%;
+  font-size: 17px;
+}
+
+#apppseudo {
+  height: 8%;
+  overflow: hidden;
+}
+
+#apppseudo h2, #apppseudo form {
+  margin: 0;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding:0;
+}
+
+#apppseudo form {
+  margin-left: 25px;
+}
+
+#apphof {
+  margin: 0;
+  height: 70%; /* 90% de la hauteur de la page */
+  display: flex; /* Flexbox pour centrer les éléments */
+  flex-direction: column; /* Empiler les éléments verticalement */
+  justify-content: flex-start; /* Aligner les éléments en haut du conteneur */
+  align-items: center; /* Centrer les éléments horizontalement */
+  box-sizing: border-box; /* Inclure les paddings dans les dimensions */
+  padding: 10px; /* Espace autour du contenu */
+}
+
+#apphof h2 {
+  margin: 0; /* Retirer le margin pour éviter un espacement supplémentaire */
+  text-align: center; /* Centrer le texte horizontalement */
+  width: 100%; /* Faire en sorte que le texte occupe toute la largeur */
+  flex-shrink: 0; /* Ne pas rétrécir le texte */
+  padding-bottom: 10px; /* Un peu d'espace sous le texte */
+}
 
 /*--------------- Tableau ---------------*/
 
@@ -9,16 +74,24 @@ html * {
 
 table {
   table-layout: fixed;
-  width: 100%;
-  height: 100%;
+  width: 80%; /* Le tableau occupe 80% de la largeur de son conteneur */
+  height: auto; /* Ajuste la hauteur en fonction du contenu */
+  max-height: 70%; /* Limiter la hauteur du tableau à 70% de la hauteur de l'écran */
   padding: 0;
   border-collapse: collapse;
   border: 3px solid purple;
+  margin-top: 20px; /* Espacement au-dessus du tableau */
+  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+}
+
+tr {
+  height: auto; /* Les lignes ajustent leur hauteur selon le contenu */
 }
 
 th, td, tr, thead {
   border: 1px solid black;
   padding: 10px;
+  text-align: center;
 }
 
 /*----- Largeur de chaque colonne -----*/
@@ -26,9 +99,11 @@ th, td, tr, thead {
 thead th:nth-child(1) {
   width: 33%;
 }
+
 thead th:nth-child(2) {
   width: 33%;
 }
+
 thead th:nth-child(3) {
   width: 33%;
 }
@@ -36,12 +111,13 @@ thead th:nth-child(3) {
 /*----- Couleur -----*/
 
 thead * {
-  background-color: rgba( 1 , 49 , 180, 0.7)
+  background-color: rgba(1, 49, 180, 0.7);
 }
+
 tbody td {
-  background-color: rgba( 1 , 49 , 180, 0.5)
+  background-color: rgba(1, 49, 180, 0.5);
 }
 
 tbody th {
-  background-color: rgba( 1 , 49 , 180, 0.6) /*#FFD700*/
+  background-color: rgba(1, 49, 180, 0.6);
 }
