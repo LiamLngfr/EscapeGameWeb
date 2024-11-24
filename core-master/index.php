@@ -13,7 +13,7 @@ Flight::set('db', $link);
 
 
 Flight::route('/', function(){
-	Flight::redirect('/accueil');
+    Flight::redirect('/accueil');
 });
 
 
@@ -23,7 +23,7 @@ Flight::route('/accueil', function() {
 
 
 Flight::route('/jeu', function() {
-	Flight::render('jeu');
+    Flight::render('jeu');
 });
 
 
@@ -33,49 +33,52 @@ Flight::route('/jeu', function() {
 //      Gestion des objets
 
 Flight::route('/premierObjet', function(){
-	$IdPoint = '1';
-	$link = Flight::get('db');
+    $IdPoint = '1';
+    $link = Flight::get('db');
 
-	if (isset($IdPoint) and !empty($IdPoint)) {
-		$reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE id=". $IdPoint);
-		$resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
+    if (isset($IdPoint) and !empty($IdPoint)) {
+        $reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE id=". $IdPoint);
+        $resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
 
-		if (!$resultat) {
-			$resultat = []; // Retourne un tableau vide si aucune donnée n'est trouvée
-		};
-		Flight::json(['resultat' => $resultat]);
-	};
+        if (!$resultat) {
+            $resultat = []; // Retourne un tableau vide si aucune donnée n'est trouvée
+        };
+        Flight::json(['resultat' => $resultat]);
+    };
 });
 
 Flight::route('/objetSuivant', function() {
-	$IdPoint = Flight::request()->data->IdPoint;
-	$link = Flight::get('db');
+    $IdPoint = Flight::request()->data->IdPoint;
+    $link = Flight::get('db');
 
-	if (isset($IdPoint) and !empty($IdPoint)) {
-		$reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE previous_item_id=". $IdPoint);
-		$resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
+    if (isset($IdPoint) and !empty($IdPoint)) {
+        $reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE previous_item_id=". $IdPoint);
+        $resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
 
-		if (!$resultat) {
-			$resultat = []; // Retourne un tableau vide si aucune donnée n'est trouvée
-		};
-		Flight::json(['resultat' => $resultat]);
-	};
+        if (!$resultat) {
+            $resultat = []; // Retourne un tableau vide si aucune donnée n'est trouvée
+        };
+        Flight::json(['resultat' => $resultat]);
+    };
 });
 
 
 //      Gestion des données du joueur
 
 Flight::route('POST /add-pseudo', function() {
-	$link = Flight::get('db');
-	$input = json_decode(file_get_contents('php://input'), true); // Récupérer les données envoyées en POST
-
+    $link = Flight::get('db');
+    $input = json_decode(file_get_contents('php://input'), true); // Récupérer les données envoyées en POST
     if (isset($input['pseudo']) && !empty($input['pseudo'])) {
         $pseudo = pg_escape_string($link, $input['pseudo']); // Sécuriser le pseudo
-        // Requête pour ajouter le pseudo
         $query = "INSERT INTO joueurs (pseudo) VALUES ('$pseudo')";
         $result = pg_query($link, $query);
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Pseudo ajouté avec succès!']); //, 'redirect' => '/jeu'  // On renvoie true ou false pour le
+        } else {                                                                                                        //fichier pseudo.js
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout du pseudo.']);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Il faut définir un pseudo !']);
+        echo json_encode(['success' => false, 'message' => 'Le pseudo est requis.']);
     }
 });
 
