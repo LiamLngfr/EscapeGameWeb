@@ -23,12 +23,14 @@
     <div id="appmap">
       <div id="inventaire">
         <h3>Inventaire</h3>
-        <ul>
-          <li v-for= "item in inventaire" @click="cliqueItem">
-            <img v-bind:src="item.chemin_img" alt="" height="40px" width="30px" v-bind:data-id="item.id" v-bind:data-name="item.name">
-          </li>
-        </ul>
-        <p id="objetActif">{{itemName}}</p>
+        <div id="contenu_inv">
+          <ul>
+            <li v-for= "item in inventaire" @click="cliqueItem">
+              <img v-bind:src="item.chemin_img" alt="" height="40px" width="30px" v-bind:data-id="item.id" v-bind:data-name="item.name">
+            </li>
+          </ul>
+          <p id="objetActif">{{itemName}}</p>
+        </div>
       </div>
       <div id="triche">
         <input type="checkbox" v-model="triche" @input="toggleWMS()">Triche

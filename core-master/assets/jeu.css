@@ -21,13 +21,16 @@ html, body {
   overflow: hidden;
   display: grid;
   grid-template-columns: 8fr 1fr;
-  align-items: center;
+  align-items: top;
 }
 
 #inventaire {
   text-align: left;
   height: 100%;
   position: relative;
+  background-color: rgba(102 , 102 , 255, 0.1);
+  border-right: 1px solid purple;
+  border-top: 1px solid purple;
 }
 
 #triche {
@@ -36,7 +39,7 @@ html, body {
 
 #appmap h3 {
   position: absolute;
-  top: 10px;
+  top: 0px;
   left: 5px;
   margin: 0;
 }
@@ -49,10 +52,17 @@ html, body {
   list-style-type: none;
 }
 
+#contenu_inv p {
+  position: absolute;
+  top: 17px;
+  left: 10px;
+  margin: 0;
+}
+
 #appmap ul li:first-child {
   position: absolute;
   top: 10px;
-  left: 5px;
+  left: 10px;
   margin: 0;
   height: 8%;
 }
@@ -60,7 +70,7 @@ html, body {
 #appmap ul li:nth-child(2) {
   position: absolute;
   top: 10px;
-  left: 45px;
+  left: 50px;
   margin: 0;
   height: 8%;
 }

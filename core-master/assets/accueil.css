@@ -51,21 +51,21 @@ header p {
 
 #apphof {
   margin: 0;
-  height: 70%; /* 90% de la hauteur de la page */
-  display: flex; /* Flexbox pour centrer les éléments */
-  flex-direction: column; /* Empiler les éléments verticalement */
-  justify-content: flex-start; /* Aligner les éléments en haut du conteneur */
-  align-items: center; /* Centrer les éléments horizontalement */
-  box-sizing: border-box; /* Inclure les paddings dans les dimensions */
-  padding: 10px; /* Espace autour du contenu */
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 #apphof h2 {
-  margin: 0; /* Retirer le margin pour éviter un espacement supplémentaire */
-  text-align: center; /* Centrer le texte horizontalement */
-  width: 100%; /* Faire en sorte que le texte occupe toute la largeur */
+  margin: 0;
+  text-align: center;
+  width: 100%;
   flex-shrink: 0; /* Ne pas rétrécir le texte */
-  padding-bottom: 10px; /* Un peu d'espace sous le texte */
+  padding-bottom: 10px;
 }
 
 /*--------------- Tableau ---------------*/
@@ -74,14 +74,14 @@ header p {
 
 table {
   table-layout: fixed;
-  width: 80%; /* Le tableau occupe 80% de la largeur de son conteneur */
-  height: auto; /* Ajuste la hauteur en fonction du contenu */
-  max-height: 70%; /* Limiter la hauteur du tableau à 70% de la hauteur de l'écran */
+  width: 80%;
+  height: auto;
+  max-height: 70%;
   padding: 0;
   border-collapse: collapse;
   border: 3px solid purple;
-  margin-top: 20px; /* Espacement au-dessus du tableau */
-  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+  margin-top: 20px;
+  overflow-y: auto;
 }
 
 tr {
