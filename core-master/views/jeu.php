@@ -23,7 +23,7 @@
     <div id="appmap">
       <div id="inventaire">
         <h3>Inventaire</h3>
-        <ul >
+        <ul>
           <li v-for= "item in inventaire">
             <img v-bind:src="item.chemin_img" alt="" height="40px" width="30px">
           </li>
