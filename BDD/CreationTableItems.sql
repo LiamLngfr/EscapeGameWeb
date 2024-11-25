@@ -31,14 +31,14 @@ DELETE FROM items;
 
 INSERT INTO items VALUES (1, 'Pingouin', null, 4731, null, null, false, false, 7, 'assets/Image/pingouin.png', 64, ST_SetSRID(ST_MakePoint(47.537842,-18.947856 ), 4326), 'Salut à toi, je savais que tu viendrais. 
 Avec les ptis gars, on a caché un code dans un pays du monde connu pour ses allures volcaniques pour savoir si tu es digne de 
-suivre cette route : trouve-le et reviens me voir, je te dirais où aller. ', 'Bien joué, d’après mes infos, les prochains lieux où tu dois aller sont la résidence de la Dame de 
-Fer et la capitale d’invention des pâtes. Ça a du sens pour toi ? Pour moi absolument aucun ! ');
+suivre cette route : trouve-le et reviens me voir, je te dirais où aller. ', 'Bien joué, d’après mes infos, le prochain lieu où tu dois aller est la résidence de la Dame de 
+Fer. Ça a du sens pour toi ? Pour moi absolument aucun ! ');
 INSERT INTO items VALUES (16, 'CodePingouin', null, null, 4731, 1, false, false, 7, 'assets/Image/volcan.png', 192, ST_SetSRID(ST_MakePoint(-21.939697,64.144161 ), 4326), 'Vous remarquez un volcan en activité, puis en plissant les yeux remarquez ce qui s’apparente à des chiffres écrits sur le flanc de la montagne enflammée... 4731', null);
 INSERT INTO items VALUES (75, 'DameDeFer', 10, null, null, 1, true, false, 10, 'assets/Image/cuisinier.png', 64, ST_SetSRID(ST_MakePoint(-0.127611,51.503338 ), 4326), 'Salut à toi ! J’ai un service à te demander : je ne supporte plus la cuisine d’ici, je rêve d’un plat de pâtes qui viendrait de la capitale où elles ont été créées.  
 Mais si tu sais où c’est ! Un indice : ils ont également inventé la poudre à canon !! 
 On m’a aussi confié un message pour toi, mais je ne m’en souviens pas. J’imagine qu’avec le ventre plein cela pourrait me revenir.', 'Ah merci ! Je m’attendais à des nouilles mais j’imagine qu’une image de nouille, c’était plus compliqué à détourer… Enfin bref ! Voilà ton message : ton aventure va continuer dans la 
-capitale du pays où la première fusée a décollée dans l\'espace. ');
-INSERT INTO items VALUES (10, 'Pates', null, null, null, 1, true, true, 5, 'assets/Image/pates.png', 64, ST_SetSRID(ST_MakePoint(116.38916,39.918163 ), 4326), null, null);
+capitale du pays où la première fusée a décollée dans l''espace. ');
+INSERT INTO items VALUES (10, 'Pates', null, null, null, 75, false, true, 5, 'assets/Image/pates.png', 64, ST_SetSRID(ST_MakePoint(116.38916,39.918163 ), 4326), null, null);
 INSERT INTO items VALUES (58, 'Fusee', null, null, null, 75, true, false, 6, 'assets/Image/fusee.png', 96, ST_SetSRID(ST_MakePoint(37.617188,55.764213 ), 4326), 'Après quelques dizaines de minutes de balade à Moscou, vous vous retrouvez devans une maquette de fusée. En vous approchant, vous remarquez une gravure sous la maquette : on prochain indice se trouvera, là où l’on consomme le plus de coca. ', null);
 INSERT INTO items VALUES (98, 'Coca', null, null, null, 58, false, false, 7, 'assets/Image/cocac.png', 64, ST_SetSRID(ST_MakePoint(-99.140625,19.435514 ), 4326), 'Après tous ces kilomètres parcourus et le jetlag qui commence à faire effet, vous croyez halluciner : une bouteille de coca qui porte un sombrero vous enjoint à aller dans la capitale des Kangourous. Sans chercher à comprendre ce qu’il se passe, vous repartez sans attendre.', null);
 INSERT INTO items VALUES (6, 'Kangourou', null, null, null, 98, false, false, 9, 'assets/Image/kangourou.png', 64, ST_SetSRID(ST_MakePoint(149.106445,-35.290469 ), 4326), 'Après la bouteille, ce kangourou se met à vous parler : tu dois te presser d’aller dans la pays où l’on parle le plus portugais. Sans élaborer, il s’en va d’un saut.' , null);

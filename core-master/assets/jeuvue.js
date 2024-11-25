@@ -13,7 +13,7 @@ let vue = Vue.createApp({
       feature: L.featureGroup([]),
       map: null,
       point: [],
-      inventaire: [{id: 2, chemin_img: "assets/Image/parchemin.PNG"}],
+      inventaire: [{id: 2, name: 'Parchemin', chemin_img: "assets/Image/parchemin.PNG"}],
       lock: [],
       code: null,
       wmsLayer: null,
@@ -22,7 +22,9 @@ let vue = Vue.createApp({
       startTime: null, // Temps de départ
       elapsedTime: 0,  // Temps écoulé (ms)
       isRunning: false, // Si le jeu est fini ou non
-      pseudo: ''
+      pseudo: '',
+      itemActif: null,
+      itemName: null,
     };
   },
 
@@ -98,12 +100,6 @@ let vue = Vue.createApp({
 
             // Vérifie la validité du marqueur
             if (marker) {
-
-              //On associe le popup au marker un seule fois, pour ne pas le refaire à chaque clic
-              // const contenu_popup = "C'est moi le pingouin !"
-              // marker.bindPopup(contenu_popup);
-              
-
               var popupContent = `
                 <div>
                   <label for="codeInput"> Salut à toi, je savais que tu viendrais. Avec les ptis gars, on a caché un code dans un pays du monde pour savoir si tu es digne de suivre cette route : trouve-le et reviens me voir, je te dirais où aller. </label><br>
@@ -127,7 +123,6 @@ let vue = Vue.createApp({
                       var enteredCode = codeInput.value; // Récupérer l'input
                       if (enteredCode) {
                         if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
-                          marker.bindPopup(resul["dialogue_apres"])
                           this.lock.forEach(element => {
                             // element['locked'] = 't';
                             // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
@@ -135,6 +130,8 @@ let vue = Vue.createApp({
                             this.addMarkerSuivant(marker2);
                             
                           });
+                          
+                          marker.bindPopup(resul["dialogue_apres"])
                           this.lock = []
                         }
                       }
@@ -146,11 +143,7 @@ let vue = Vue.createApp({
               this.addMarkerSuivant(marker); //Ajout du marker suivant
               
 
-
-              // marker.on('click', () => {
-              //   marker.openPopup();
-              //   this.obj_suivant(marker.getLayers()[0].feature.properties.id);
-              // });
+              marker.openPopup();
             } else {
               console.warn("Le GeoJSON n'a pas généré de marqueur.");
             }
@@ -192,7 +185,6 @@ let vue = Vue.createApp({
     },
 
     addMarkerSuivant(marker){
-      // marker.bindPopup(popup)
       marker.on('click', () => {
           marker.openPopup();
           this.obj_suivant(marker.getLayers()[0].feature.properties.id);
@@ -208,16 +200,18 @@ let vue = Vue.createApp({
 
           
 
-          this.inventaire.forEach(element => {
-            if (marker.getLayers()[0].feature.properties.item_to_unlock_id === element['id']){
-              marker.bindPopup(marker.getLayers()[0].feature.properties.dialogue_apres)
-              this.lock.forEach(element => {
-                var marker2 = this.addGeoJSONToMap(element);
-                if (marker2) {
-                this.addMarkerSuivant(marker2);};
-              });
+
+          if (marker.getLayers()[0].feature.properties.item_to_unlock_id === this.itemActif){
+            marker.bindPopup(marker.getLayers()[0].feature.properties.dialogue_apres)
+            console.log(this.lock)
+            this.lock.forEach(element => {
+              console.log(this.lock)
+              console.log(element)
+              var marker2 = this.addGeoJSONToMap(element);
+              this.addMarkerSuivant(marker2);
+            });
           };
-        });
+
 
         if (marker.getLayers()[0].feature.properties.pickable === 't' && !this.inventaire.includes(marker.getLayers()[0].feature.properties)) {
           const index = this.point.indexOf(marker);
@@ -247,7 +241,7 @@ let vue = Vue.createApp({
                 var icon = L.icon({
                     iconUrl: feature.properties.iconUrl || resul["chemin_img"],
                     iconSize: [resul["taille_icon"],resul["taille_icon"]],
-                    iconAnchor: [16, 32],
+                    iconAnchor: [resul["taille_icon"]/2, resul["taille_icon"]/2],
                     popupAnchor: [0, -32]
                 });
             
@@ -255,11 +249,10 @@ let vue = Vue.createApp({
             }
         })
         marker.bindPopup(resul["dialogue_avant"])
+        marker.openPopup()
         this.point.push(marker);
         return marker;
-      } else {
-        console.warn("Les données GeoJSON sont invalides ou inexistantes.");
-      };
+      }
     },
 
     toggleWMS() {
@@ -268,6 +261,11 @@ let vue = Vue.createApp({
       } else {
         this.wmsLayer.addTo(map)
       }
+    },
+
+    cliqueItem(event) {
+      this.itemActif = event.target.dataset.id;
+      this.itemName = event.target.dataset.name;
     },
 
     startGame() {
