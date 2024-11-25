@@ -203,10 +203,7 @@ let vue = Vue.createApp({
 
           if (marker.getLayers()[0].feature.properties.item_to_unlock_id === this.itemActif){
             marker.bindPopup(marker.getLayers()[0].feature.properties.dialogue_apres)
-            console.log(this.lock)
             this.lock.forEach(element => {
-              console.log(this.lock)
-              console.log(element)
               var marker2 = this.addGeoJSONToMap(element);
               this.addMarkerSuivant(marker2);
             });
