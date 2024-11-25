@@ -16,6 +16,8 @@ Versions utilisées:
  - Prendre le temps d'admirer la beauté de la page
  - Entrer son pseudo et cliquer sur "Jouer"
  - Se déplacer et zoomer / dézoomer comme sur une carte interactive classique
+ - Cliquer sur les objets pour intéragir
+ - La partie se fini quand le popup du dernier objet est fermé
 
 
 
