@@ -23,7 +23,7 @@ let vue = Vue.createApp({
       elapsedTime: 0,  // Temps écoulé (ms)
       isRunning: false, // Si le jeu est fini ou non
       pseudo: '',
-      itemActif: null,
+      itemActif: 0,
       itemName: null,
     };
   },
@@ -107,7 +107,9 @@ let vue = Vue.createApp({
                   <button id="confirmButton">Confirmer</button>
                 </div>
               `;
+              console.log(popupContent)
               marker.bindPopup(popupContent)
+              var enteredCode = 0
 
               // Gestionnaire d'événement lorsque le popup est ouvert
               marker.on('popupopen',  () => {
@@ -120,18 +122,18 @@ let vue = Vue.createApp({
                   if (confirmButton && codeInput) {
                     // Ajout du gestionnaire de clic
                     confirmButton.onclick = () => {
-                      var enteredCode = codeInput.value; // Récupérer l'input
+                      enteredCode = codeInput.value; // Récupérer l'input
+                      console.log(marker.getLayers()[0].feature.properties.code_to_unlock)
+                      console.log(enteredCode)
                       if (enteredCode) {
                         if (marker.getLayers()[0].feature.properties.code_to_unlock === enteredCode) {
                           this.lock.forEach(element => {
-                            // element['locked'] = 't';
-                            // this.obj_suivant(marker.getLayers()[0].feature.properties.id)
                             var marker2 = this.addGeoJSONToMap(element);
                             this.addMarkerSuivant(marker2);
                             
                           });
-                          
                           marker.bindPopup(resul["dialogue_apres"])
+                          
                           this.lock = []
                         }
                       }
@@ -143,7 +145,6 @@ let vue = Vue.createApp({
               this.addMarkerSuivant(marker); //Ajout du marker suivant
               
 
-              marker.openPopup();
             } else {
               console.warn("Le GeoJSON n'a pas généré de marqueur.");
             }
@@ -154,6 +155,26 @@ let vue = Vue.createApp({
         .catch(error => {
           console.error("Erreur lors de la récupération des données :", error);
         });
+
+        fetch('/pingouin', {
+          method: 'post',
+          body: '',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+          .then(r => r.json())
+          .then(r => {
+            const resul = r['resultat'][0]; // Résultat requête SQL
+            // this.point.push(resul)
+            // Vérifie que la carte est bien là
+            if (map) {
+              // Ajoute le GeoJSON + récupère le marqueur
+              this.addGeoJSONToMap(resul);
+            }});
+
+
+
     },
 
 
@@ -186,7 +207,6 @@ let vue = Vue.createApp({
 
     addMarkerSuivant(marker){
       marker.on('click', () => {
-          marker.openPopup();
           this.obj_suivant(marker.getLayers()[0].feature.properties.id);
           
 
@@ -246,7 +266,6 @@ let vue = Vue.createApp({
             }
         })
         marker.bindPopup(resul["dialogue_avant"])
-        marker.openPopup()
         this.point.push(marker);
         return marker;
       }

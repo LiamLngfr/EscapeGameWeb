@@ -47,6 +47,21 @@ Flight::route('/premierObjet', function(){
     };
 });
 
+Flight::route('/pingouin', function(){
+    $IdPoint = '3';
+    $link = Flight::get('db');
+
+    if (isset($IdPoint) and !empty($IdPoint)) {
+        $reponse = pg_query($link, "SELECT *, ST_AsGeoJSON(geom) AS geom_json FROM items WHERE id=". $IdPoint);
+        $resultat = pg_fetch_all($reponse, PGSQL_ASSOC);
+
+        if (!$resultat) {
+            $resultat = []; // Retourne un tableau vide si aucune donnée n'est trouvée
+        };
+        Flight::json(['resultat' => $resultat]);
+    };
+});
+
 Flight::route('/objetSuivant', function() {
     $IdPoint = Flight::request()->data->IdPoint;
     $link = Flight::get('db');
