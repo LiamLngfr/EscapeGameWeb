@@ -6,7 +6,6 @@ Versions utilisées:
  - MAMP est utilisé avec PHP en version 7.4.16
  - Postgres 17.0
  - Geoserver version 2.26.0
-*A compléter*
 
 
 **Comment jouer ?**  
