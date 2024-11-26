@@ -10,7 +10,7 @@ Versions utilisées:
 
 **Comment jouer ?**  
  - Installer MAMP en veillant à le configurer sur la bonne version et à suivre les consignes du sujet
- - Installer la config geoserver, puis dans le dossier workspace de geoserver, mettre le dossier LiamGeoserver dedans
+ - Installer la config geoserver, puis dans le dossier workspace de geoserver, mettre y placer le dossier LiamGeoserver
  - Avec postgreSQL, executer le fichier dbLiamGabin.sql
  - Télécharger le dossier core-master
  - Démarrer MAMP et pointer le dossier core-master
