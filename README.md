@@ -10,8 +10,11 @@ Versions utilisées:
 
 **Comment jouer ?**  
  - Installer MAMP en veillant à le configurer sur la bonne version et à suivre les consignes du sujet
- - Installer la config geoserver, puis créer un store connecté à la base de donnée. Ensuite, créer une couche de point relié à la base de ddonnée et mettre le style heatmap.xml dans un style heatmap. Enfin lier la couche de point au style.
- - Démarrer MAMP
+ - Installer la config geoserver, puis dans le dossier workspace de geoserver, mettre le dossier LiamGeoserver dedans
+ - Avec postgreSQL, executer le fichier dbLiamGabin.sql
+ - Télécharger le dossier core-master
+ - Démarrer MAMP et pointer le dossier core-master
+ - Démarrer le geoserver
  - Ouvrir son navigateur et taper dans la barre de recherche "localhost/"
  - Prendre le temps d'admirer la beauté de la page
  - Entrer son pseudo et cliquer sur "Jouer"
